@@ -1,8 +1,13 @@
 const test = require("node:test");
 const assert = require("node:assert");
+const request = require("supertest");
 
-const { startApplication } = require("../index");
+const { createApplication } = require("../index");
 
-test("startApplication is available", () => {
-  assert.strictEqual(typeof startApplication, "function");
+test("GET / returns Syntra running response", async () => {
+  const app = createApplication();
+
+  const response = await request(app).get("/").expect(200);
+
+  assert.strictEqual(response.text, "Syntra is running");
 });
