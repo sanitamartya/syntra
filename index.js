@@ -3,7 +3,7 @@ const routes = require("./src/routes");
 
 function createApplication() {
   const app = express();
-
+  app.use(express.json());
   app.use(routes);
 
   return app;
