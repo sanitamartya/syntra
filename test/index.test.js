@@ -57,3 +57,32 @@ test("POST /workflows rejects a missing workflow name", async () => {
     error: "Workflow name is required",
   });
 });
+
+test("GET /workflows/:workflowId returns an existing workflow", async () => {
+  const app = createApplication();
+
+  const createResponse = await request(app)
+    .post("/workflows")
+    .send({
+      name: "Email Processing",
+    })
+    .expect(201);
+
+  const response = await request(app)
+    .get(`/workflows/${createResponse.body.id}`)
+    .expect(200);
+
+  assert.deepStrictEqual(response.body, createResponse.body);
+});
+
+test("GET /workflows/:workflowId returns 404 for an unknown workflow", async () => {
+  const app = createApplication();
+
+  const response = await request(app)
+    .get("/workflows/does-not-exist")
+    .expect(404);
+
+  assert.deepStrictEqual(response.body, {
+    error: "Workflow not found",
+  });
+});
