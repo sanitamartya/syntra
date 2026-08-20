@@ -23,3 +23,13 @@ test("stopApplication closes the server", async () => {
 
   assert.strictEqual(server.listening, false);
 });
+
+test("GET /workflows returns an empty workflow collection", async () => {
+  const app = createApplication();
+
+  const response = await request(app).get("/workflows").expect(200);
+
+  assert.deepStrictEqual(response.body, {
+    workflows: [],
+  });
+});
