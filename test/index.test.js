@@ -86,3 +86,28 @@ test("GET /workflows/:workflowId returns 404 for an unknown workflow", async () 
     error: "Workflow not found",
   });
 });
+
+test("GET /workflows returns created workflows", async () => {
+  const app = createApplication();
+
+  const firstWorkflow = await request(app)
+    .post("/workflows")
+    .send({
+      name: "Email Processing",
+    })
+    .expect(201);
+
+  const secondWorkflow = await request(app)
+    .post("/workflows")
+    .send({
+      name: "Data Processing",
+    })
+    .expect(201);
+
+  const response = await request(app).get("/workflows").expect(200);
+
+  assert.deepStrictEqual(response.body.workflows, [
+    firstWorkflow.body,
+    secondWorkflow.body,
+  ]);
+});

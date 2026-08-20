@@ -1,12 +1,16 @@
 const express = require("express");
-const workflowRoutes = require("./workflow.routes");
+const createWorkflowRoutes = require("./workflow.routes");
 
-const router = express.Router();
+function createRoutes() {
+  const router = express.Router();
 
-router.get("/", (request, response) => {
-  response.status(200).send("Syntra is running");
-});
+  router.get("/", (request, response) => {
+    response.status(200).send("Syntra is running");
+  });
 
-router.use("/workflows", workflowRoutes);
+  router.use("/workflows", createWorkflowRoutes());
 
-module.exports = router;
+  return router;
+}
+
+module.exports = createRoutes;
