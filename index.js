@@ -1,11 +1,10 @@
 const express = require("express");
+const routes = require("./src/routes");
 
 function createApplication() {
   const app = express();
 
-  app.get("/", (request, response) => {
-    response.status(200).send("Syntra is running");
-  });
+  app.use(routes);
 
   return app;
 }
